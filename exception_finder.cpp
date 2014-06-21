@@ -1,5 +1,8 @@
 #include <iostream>
 #include <cstdio>
+#include <vector>
+
+#define NUM_BUFFERS 20
 
 static __inline unsigned fetch_k0( void )
 {
@@ -53,15 +56,21 @@ return os;
 
 int main( void )
 {
-ksample sample_old;
-while(1)
+std::vector<ksample> samples;
+samples.reserve(NUM_BUFFERS);//up front to try to avoid catching registers from mmap/setbrk
+ksample first;
+samples.push_back( first );
+while( samples.size() < NUM_BUFFERS )
 	{
 	ksample sample;
-	if( sample_old != sample )
+	if( samples.back() != sample )
 		{
-		std::cout<<sample<<std::endl;
-		sample_old = sample;
+		samples.push_back( sample );
 		}
 	}
+
+for (std::vector<ksample>::iterator it = samples.begin() ; it != samples.end(); ++it)
+	std::cout << *it << std::endl;
+
 return 0;
 }
