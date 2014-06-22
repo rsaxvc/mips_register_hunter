@@ -1,8 +1,6 @@
 #include <iostream>
 #include <cstdio>
-#include <vector>
-
-#define NUM_BUFFERS 20
+#include <set>
 
 static __inline unsigned fetch_k0( void )
 {
@@ -37,9 +35,20 @@ class ksample
 		fetch();
 		}
 
-	bool operator!=(const ksample & other)
+	bool operator<(const ksample & other) const
 		{
-		return k0 != other.k0 || k1 != other.k1;
+		if( k0 < other.k0 )
+			{
+			return true;
+			}
+		else if( k0 == other.k0 )
+			{
+			return k1 < other.k1;
+			}
+		else
+			{
+			return false;
+			}
 		}
 
 	friend std::ostream& operator<<(std::ostream& os, const ksample & k);
@@ -56,21 +65,18 @@ return os;
 
 int main( void )
 {
-std::vector<ksample> samples;
-samples.reserve(NUM_BUFFERS);//up front to try to avoid catching registers from mmap/setbrk
+std::set<ksample> samples;
 ksample sample;
-samples.push_back( sample );
-while( samples.size() < NUM_BUFFERS )
+samples.insert( sample );
+while( 1 )
 	{
 	sample.fetch();
-	if( samples.back() != sample )
+	if( samples.find( sample ) == samples.end() )
 		{
-		samples.push_back( sample );
+		samples.insert( sample );
+		std::cout << sample << std::endl;
 		}
 	}
-
-for (std::vector<ksample>::iterator it = samples.begin() ; it != samples.end(); ++it)
-	std::cout << *it << std::endl;
 
 return 0;
 }
