@@ -58,11 +58,11 @@ int main( void )
 {
 std::vector<ksample> samples;
 samples.reserve(NUM_BUFFERS);//up front to try to avoid catching registers from mmap/setbrk
-ksample first;
-samples.push_back( first );
+ksample sample;
+samples.push_back( sample );
 while( samples.size() < NUM_BUFFERS )
 	{
-	ksample sample;
+	sample.fetch();
 	if( samples.back() != sample )
 		{
 		samples.push_back( sample );
