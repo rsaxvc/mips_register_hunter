@@ -2,21 +2,6 @@
 #include <cstdio>
 #include <set>
 
-static __inline unsigned fetch_k0( void )
-{
-unsigned retn;
-asm volatile ("move %0, $k0" : "=r" (retn));
-return retn;
-}
-
-static __inline unsigned fetch_k1( void )
-{
-unsigned retn;
-asm volatile ("move %0, $k1" : "=r" (retn));
-return retn;
-}
-
-
 class ksample
 	{
 	private:
@@ -27,8 +12,8 @@ class ksample
 
 	ksample( void )
 		{
-		k0 = fetch_k0();
-		k1 = fetch_k1();
+		asm volatile ("move %0, $k0" : "=r" (k0));
+		asm volatile ("move %0, $k1" : "=r" (k1));
 		}
 
 	bool operator<(const ksample & other) const
