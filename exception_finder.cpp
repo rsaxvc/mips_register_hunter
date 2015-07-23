@@ -50,8 +50,7 @@ std::ostream& operator<<(std::ostream& os, const ksample & sample)
 {
 char buf[128];
 snprintf( buf, sizeof(buf), "k0:%08x k1:%08x", sample.k0, sample.k1 );
-os << buf;
-return os;
+return os << buf;
 }
 
 
