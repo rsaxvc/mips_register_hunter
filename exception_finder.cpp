@@ -37,17 +37,13 @@ class ksample
 
 	bool operator<(const ksample & other) const
 		{
-		if( k0 < other.k0 )
-			{
-			return true;
-			}
-		else if( k0 == other.k0 )
+		if( k0 == other.k0 )
 			{
 			return k1 < other.k1;
 			}
 		else
 			{
-			return false;
+			return k0 < other.k0;
 			}
 		}
 
