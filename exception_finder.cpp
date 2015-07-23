@@ -24,15 +24,11 @@ class ksample
 	unsigned k1;
 
 	public:
-	void fetch( void )
-		{
-		k0 = fetch_k0();
-		k1 = fetch_k1();
-		}
 
 	ksample( void )
 		{
-		fetch();
+		k0 = fetch_k0();
+		k1 = fetch_k1();
 		}
 
 	bool operator<(const ksample & other) const
@@ -62,11 +58,9 @@ return os;
 int main( void )
 {
 std::set<ksample> samples;
-ksample sample;
-samples.insert( sample );
 while( 1 )
 	{
-	sample.fetch();
+	ksample sample;
 	if( samples.find( sample ) == samples.end() )
 		{
 		samples.insert( sample );
